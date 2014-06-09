@@ -1,0 +1,160 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link rel="shortcut icon" href="/ndhu.ico">
+		<title></title>
+		<link href="/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/css/offcanvas.css" rel="stylesheet">
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					</button><a id="name" class="navbar-brand" href="#"></a>
+				</div>
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="/">回到首頁</a>
+						</li>
+						<li><a href="/#about">關於我們</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row row-offcanvas row-offcanvas-right">
+				<div class="col-xs-12 col-sm-9">
+<p class="pull-right visible-xs">
+	<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas" id="recbtn">相關推薦</button>
+</p>
+					<div id="info">
+					</div>
+					<div id="list">
+					</div>
+				</div>
+				<!--/span-->
+				<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+					<div id="reclist" class="list-group">
+					</div>
+				</div>
+				<!--/span-->
+			</div>
+			<!--/row-->
+			<hr>
+			<footer>
+				<!-- <p>&copy; 狐狸先生, cs8425</p> -->
+			</footer>
+		</div>
+
+		<script src="/javascript/jquery-1.11.1.min.js"></script>
+		<script src="/javascript/bootstrap.min.js"></script>
+		<script src="/javascript/underscore-min.js"></script>
+		<script src="/javascript/main.js"></script>
+<script type="ndhu/link" id='linkList'>
+<hr>
+<%
+_.each(data,function(item,key,list){
+%>
+<div class="col-sm-6 col-md-4 col-lg-4">
+	<a href="<%- item.url %>" nodetype="s">
+		<div class="panel panel-info" style="height: 60px;">
+			<div class="panel-body">
+<% if((item.image != "")&&(item.image)) { %>				<div style="height:100%;width:20%;display:table-cell; vertical-align:middle;">
+					<div style="float: left; height: 30px;">
+						<img src="<%- item.image %>" style="height: 100%; width: auto;">
+					</div>
+				</div>
+				<div style="height:100%;width:100%;display:table-cell; vertical-align:middle;text-align: center;"><%- item.name %></div><% }else{ %>
+				<div style="margin:0 auto;"><%- item.name %></div>
+<% } %>
+			</div>
+		</div>
+	</a>
+</div>
+<%
+});
+%>
+</script>
+<script type="ndhu/reclink" id='reclinkList'>
+<a class="list-group-item active">相關推薦</a>
+<%
+_.each(data,function(item,key,list){
+%>
+<a href="<%- item.url %>" class="list-group-item" nodetype="r"><%- item.name %></a>
+<%
+});
+%>
+</script>
+<script type="ndhu/info" id='infotemp'>
+<div class="jumbotron">
+<% if(data.image) {
+	_.each(data.image ,function(item,key,list){
+%>
+	<img src="<%- item %>" style="height: auto; width: 100%;">
+	<!-- 照片 -->
+	<br>
+	<br>
+<%
+	});
+ } %>
+<% if(data.tab) {
+	if(data.tab.length) {
+%>
+	<!-- 詳情框框 -->
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			 <h3 class="panel-title">詳情</h3>
+
+		</div>
+		<div class="panel-body">
+			<!-- 詳情表格 -->
+			<div style="display: table;">
+<%
+		_.each(data.tab ,function(item,id,list){
+			if(item.url != ""){
+%>
+				<div style="display:table-row;">
+					<div style="display:table-cell;width:20%"><%- item.key %></div>
+					<div style="display:table-cell;"><a href="<%- item.url %>"><%- item.val %></a></div>
+				</div>
+<% 			}else{ %>
+				<div style="display:table-row;">
+					<div style="display:table-cell;width:20%"><%- item.key %></div>
+					<div style="display:table-cell;"><%- item.val %></div>
+				</div>
+<%
+			}
+		});
+ 	}
+ }%>
+			</div>
+		</div>
+	</div>
+</div>
+<% if(data.des) { %>
+<div class="row">
+	<div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<h5><p><%- data.des %></p></h5>
+	</div>
+</div>
+<% } %>
+</script>
+	</body>
+</html>
+

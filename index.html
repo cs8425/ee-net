@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link rel="shortcut icon" href="/ndhu.ico">
+		<title>東華大學校園導覽</title>
+		<link href="/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/css/offcanvas.css" rel="stylesheet">
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					</button> <a class="navbar-brand" href="/">東華大學校園導覽</a>
+				</div>
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="/#about">關於我們</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /.navbar -->
+		<div class="container">
+			<div class="row row-offcanvas row-offcanvas-right">
+				<div id="list" class="col-xs-12 col-sm-12">
+
+				</div>
+				<!--/span-->
+			</div>
+			<!--/row-->
+			<hr>
+			<footer>
+				<!-- <p>&copy; 狐狸先生, cs8425</p> -->
+			</footer>
+		</div>
+
+		<script src="/javascript/jquery-1.11.1.min.js"></script>
+		<script src="/javascript/bootstrap.min.js"></script>
+		<script src="/javascript/underscore-min.js"></script>
+		<script src="/javascript/root.js"></script>
+<script type="ndhu/link" id='linkList'>
+<div class="jumbotron">
+	<img src="/pic/bg1.jpg" style="height: auto; width: 100%;">
+</div>
+<hr>
+<%
+_.each(data,function(item,key,list){
+%>
+<div class="col-sm-6 col-md-4 col-lg-4">
+	<a href="<%- item[1] %>">
+		<div class="panel panel-info" style="height: 60px;">
+			<div class="panel-body">
+<% if(item[2] != "") { %>				<div style="height:100%;width:20%;display:table-cell; vertical-align:middle;">
+					<div style="float: left; height: 30px;">
+						<img src="<%- item[2] %>" style="height: 100%; width: auto;">
+					</div>
+				</div>
+				<div style="height:100%;width:100%;display:table-cell; vertical-align:middle;text-align: center;"><%- item[0] %></div><% }else{ %>
+				<div style="margin:0 auto;"><%- item[0] %></div>
+<% } %>
+			</div>
+		</div>
+	</a>
+</div>
+<%
+});
+%>
+</script>
+	</body>
+</html>
+
