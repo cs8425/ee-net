@@ -68,7 +68,7 @@ var render = function (data){
 	}else{
 		$('#info').html('');
 	}
-	$('[data-toggle=offcanvas]').click(function () {
+	$('[data-toggle=offcanvas]').unbind("click").click(function () {
 		if($('.row-offcanvas').hasClass('active')){
 			window.history.go(-1);
 		}else{
@@ -106,7 +106,7 @@ var bind = function (){
 				},
 				error: function( data, textStatus, jqXHR ) {
 					//console.log('error', data, textStatus, jqXHR);
-					document.removeEventListener("backbutton", onBackbutton, false);
+					//document.removeEventListener("backbutton", onBackbutton, false);
 					window.location = pageurl;
 				}
 			});
@@ -128,7 +128,7 @@ var bind = function (){
 		}
 	});
 };
-//go();
+go();
 /* the below code is to override back button to get the ajax content without page reload*/
 $(window).bind('popstate', function(e) {
 	go();
@@ -140,35 +140,45 @@ $(window).bind('popstate', function(e) {
 	}
 });
 
-var JsonFormatter = function (jsonObj) {
-	var cipherParams = CryptoJS.lib.CipherParams.create({
-		ciphertext: JSON.parse(jsonObj.ct)
-	});
-	if (jsonObj.iv) {
-		cipherParams.iv = JSON.parse(jsonObj.iv);
-	}
-	if (jsonObj.s) {
-		cipherParams.salt = JSON.parse(jsonObj.s);
-	}
-	return cipherParams;
-};
-$.ajax({
-	url: '/api/js/',
-	type: "GET",
-	dataType: "json",
-	cache: false,
-	success: function( data, textStatus, jqXHR ) {
-		//console.log(data);
-		$.ajax({
-			url: '/api/js/',
-			type: "GET",
-			dataType: "json",
-			success: function( data2, textStatus, jqXHR ) {
-				//console.log(data, JsonFormatter(data2));
-				//console.log(CryptoJS.Rabbit.decrypt(JsonFormatter(data2), data).toString(CryptoJS.enc.Utf8));
-				eval(CryptoJS.Rabbit.decrypt(JsonFormatter(data2), data).toString(CryptoJS.enc.Utf8));
+var jsonp = function () {
+	var JsonFormatter = function (jsonObj) {
+		var cipherParams = {
+			ciphertext: JSON.parse(jsonObj.ct)
+		};
+		if (jsonObj.iv) {
+			cipherParams.iv = JSON.parse(jsonObj.iv);
+		}
+		if (jsonObj.s) {
+			cipherParams.salt = JSON.parse(jsonObj.s);
+		}
+		return cipherParams;
+	};
+	$.ajax({
+		url: '/api/js/',
+		type: "GET",
+		dataType: "json",
+		cache: false,
+		success: function( data, textStatus, jqXHR ) {
+			//console.log('1', data, typeof data);
+			if(typeof data === 'string'){
+				var t = setTimeout(function () {
+					$.ajax({
+						url: '/api/js/',
+						type: "GET",
+						dataType: "json",
+						cache: false,
+						success: function( data2, textStatus, jqXHR ) {
+							//console.log('2', data, data2, JsonFormatter(data2));
+							//console.log(CryptoJS.Rabbit.decrypt(JsonFormatter(data2), data).toString(CryptoJS.enc.Utf8));
+							eval(CryptoJS.Rabbit.decrypt(JsonFormatter(data2), data).toString(CryptoJS.enc.Utf8));
+						}
+					});
+				}, 10);
+			}else{
+				var t = setTimeout(jsonp,0);
 			}
-		});
-	}
-});
+		}
+	});
+}
+setTimeout(jsonp, 50);
 
